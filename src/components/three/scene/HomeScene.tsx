@@ -3,21 +3,12 @@
 import styles from "./HomeScene.module.css";
 
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef } from "react";
-import { Mesh } from "three";
+import { Canvas } from "@react-three/fiber";
 
-const Box = () => {
-  const meshRef = useRef<Mesh>(null!);
-
-  useFrame(({ clock }) => {
-    meshRef.current.rotation.x = clock.getElapsedTime();
-  });
-
+const VolumetricLightSource = () => {
   return (
-    <mesh ref={meshRef}>
-      <boxGeometry />
-      <meshBasicMaterial color="royalblue" />
+    <mesh>
+      <sphereGeometry />
     </mesh>
   );
 };
@@ -26,11 +17,14 @@ export const HomeScene = () => {
   return (
     <div className={styles.scene}>
       <Canvas>
+        {/* dev */}
         <OrbitControls />
-        <PerspectiveCamera />
-        <Box />
-        <pointLight position={[10, 10, 10]} />
         <gridHelper />
+        {/* scene setup */}
+        <PerspectiveCamera />
+        <pointLight position={[10, 10, 10]} />
+        {/* objects */}
+        <VolumetricLightSource />
       </Canvas>
     </div>
   );
