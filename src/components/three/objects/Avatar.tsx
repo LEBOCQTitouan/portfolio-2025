@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { Mesh, TextureLoader } from "three";
+import { Group, Mesh, TextureLoader } from "three";
 
 const Planet = () => {
   const meshRef = useRef<Mesh>(null!);
@@ -39,8 +39,15 @@ const Cube = () => {
 };
 
 export const Avatar = () => {
+  const groupRef = useRef<Group>(null!);
+
+  useFrame(({ pointer, viewport }) => {
+    const x = (pointer.x * viewport.width) / 2.5;
+    const y = (pointer.y * viewport.height) / 2.5;
+    groupRef.current.lookAt(x, y, 1);
+  });
   return (
-    <group>
+    <group ref={groupRef}>
       <Cube />
       <Planet />
     </group>
