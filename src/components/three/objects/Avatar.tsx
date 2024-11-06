@@ -32,7 +32,7 @@ const Cube = () => {
         transparent
         opacity={0.5}
         map={colorMap}
-        // normalMap={normalMap}
+        normalMap={normalMap}
       />
     </mesh>
   );
