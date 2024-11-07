@@ -35,6 +35,7 @@ const Dome = () => {
   });
 
   // TODO : need to remove error on nodes.Dome.geometry
+  // TODO : fix problem with shaders in dome (interesting ressource : "https://codesandbox.io/p/sandbox/meshtransmissionmaterial-hmgdjq" & "https://codesandbox.io/p/sandbox/html-markers-forked-pvtzw7")
   return (
     <group dispose={null}>
       <mesh
