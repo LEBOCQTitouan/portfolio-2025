@@ -2,7 +2,11 @@
 
 import styles from "./HomeScene.module.css";
 
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import {
+  Environment,
+  OrbitControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Avatar } from "../objects/Avatar";
 
@@ -15,8 +19,8 @@ export const HomeScene = () => {
         <gridHelper />
         {/* scene setup */}
         <PerspectiveCamera />
-        <pointLight color="#fff" intensity={1000} position={[10, 10, 10]} />
-        <ambientLight />
+        <Environment preset="city" />
+        <directionalLight intensity={3} position={[0, 3, 2]} />
         {/* objects */}
         <Avatar />
       </Canvas>
