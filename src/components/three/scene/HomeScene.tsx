@@ -10,6 +10,8 @@ import {
 import { Canvas } from "@react-three/fiber";
 import { Avatar } from "../objects/Avatar";
 
+// TODO : need to import a custom and higher resolution cubebox for the drei Environment
+// @see @react-three/drei/Environment
 export const HomeScene = () => {
   return (
     <div className={styles.scene}>
@@ -19,8 +21,8 @@ export const HomeScene = () => {
         <gridHelper />
         {/* scene setup */}
         <PerspectiveCamera />
-        <Environment preset="studio" />
         <directionalLight intensity={3} position={[0, 3, 2]} />
+        <Environment files="/simple-bg.jpg" background />
         {/* objects */}
         <Avatar />
       </Canvas>
