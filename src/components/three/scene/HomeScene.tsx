@@ -19,7 +19,7 @@ export const HomeScene = () => {
         <gridHelper />
         {/* scene setup */}
         <PerspectiveCamera />
-        <Environment preset="city" />
+        <Environment preset="studio" />
         <directionalLight intensity={3} position={[0, 3, 2]} />
         {/* objects */}
         <Avatar />
