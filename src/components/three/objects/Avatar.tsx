@@ -4,14 +4,15 @@ import React, { useRef } from "react";
 
 import { Color, Group, Mesh } from "three";
 import { MeshTransmissionMaterial } from "@react-three/drei";
+import { useControls, folder } from "leva";
 
 const Planet = () => {
   const meshRef = useRef<Mesh>(null!);
 
   return (
-    <mesh ref={meshRef} scale={0.3}>
+    <mesh ref={meshRef} scale={0.45}>
       <sphereGeometry />
-      <meshStandardMaterial />
+      <meshStandardMaterial color={new Color("#0000FF")} />
     </mesh>
   );
 };
@@ -20,23 +21,81 @@ const Planet = () => {
 const Dome = () => {
   // TODO : need to remove error on nodes.Dome.geometry (typescript lint)
   // NOTE : is not implemented in this version but is a refering to GLTF file loading
+  const config = useControls({
+    // Grouped controls
+    "Basic Properties": folder({
+      backside: { value: true, label: "Backside" },
+      transmission: {
+        value: 0.9,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: "Transmission",
+      },
+    }),
+
+    "Thickness Properties": folder({
+      backsideThickness: {
+        value: 0,
+        min: -10,
+        max: 10,
+        step: 0.1,
+        label: "Backside Thickness",
+      },
+      thickness: { value: 0, min: -10, max: 10, step: 0.1, label: "Thickness" },
+    }),
+
+    "Distortion Properties": folder({
+      anisotropicBlur: {
+        value: 0,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: "Anisotropic Blur",
+      },
+      chromaticAberration: {
+        value: 0,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: "Chromatic Aberration",
+      },
+      distortion: {
+        value: 0.05,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: "Distortion",
+      },
+      distortionScale: {
+        value: 0.07,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: "Distortion Scale",
+      },
+      temporalDistortion: {
+        value: 0.1,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: "Temporal Distortion",
+      },
+    }),
+
+    "Color Properties": folder({
+      color: { value: "#ffffff", label: "Color" },
+      attenuationColor: { value: "#ffffff", label: "Attenuation Color" },
+      backgroundColor: { value: "#ffffff", label: "Background Color" },
+    }),
+  });
   return (
     <group dispose={null}>
       <mesh castShadow>
         <boxGeometry />
         <MeshTransmissionMaterial
-          backside
-          backsideThickness={-1}
-          thickness={0.2}
-          anisotropicBlur={0.02}
-          chromaticAberration={0.5}
-          distortion={0.05}
-          distortionScale={0.07}
-          temporalDistortion={0.1}
-          transmission={1}
-          color="#a1c6ff"
-          attenuationColor="#ffffff"
-          background={new Color("#839681")}
+          background={new Color(config.backgroundColor)}
+          {...config}
         />
       </mesh>
     </group>
