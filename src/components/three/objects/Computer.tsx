@@ -6,20 +6,19 @@ import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 import { useGLTF } from "@react-three/drei";
 
-// TODO : remove the eslint disable line
 type GLTFResult = GLTF & {
   nodes: {
-    Cube: THREE.Mesh;
-    Cube001: THREE.Mesh;
-    Cube002: THREE.Mesh;
+    coffeMug: THREE.Mesh;
+    mouse: THREE.Mesh;
+    keyboard: THREE.Mesh;
+    lamp: THREE.Mesh;
+    computerBase: THREE.Mesh;
+    computerScreen: THREE.Mesh;
   };
-
   materials: {}; // eslint-disable-line
 };
 
-/*
- * TODO : reverse the model in the GLB file to remove useless Euler creation in component
- * */
+// TODO : fix lamp aterfact in gltf model
 export function Computer(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/computer.glb") as GLTFResult; // eslint-disable-line
 
@@ -39,24 +38,48 @@ export function Computer(props: JSX.IntrinsicElements["group"]) {
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Cube.geometry}
-        material={nodes.Cube.material}
+        geometry={nodes.coffeMug.geometry}
+        material={nodes.coffeMug.material}
+        position={[-4.5, 0.5, -1.5]}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Cube001.geometry}
-        material={nodes.Cube001.material}
-        position={[0, 0.669, 0]}
-        scale={1.141}
+        geometry={nodes.mouse.geometry}
+        material={nodes.mouse.material}
+        position={[-4.5, 0.5, -4.5]}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Cube002.geometry}
-        material={nodes.Cube002.material}
-        position={[0, 2.799, 0.699]}
-        scale={2.358}
+        geometry={nodes.keyboard.geometry}
+        material={nodes.keyboard.material}
+        position={[-0.4, 3.8, 0.9]}
+        scale={0.9}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.lamp.geometry}
+        material={nodes.lamp.material}
+        position={[7, 1.7, -1]}
+        rotation={[0, 0.8, 0]}
+        scale={0.9}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.computerBase.geometry}
+        material={nodes.computerBase.material}
+        position={[-0.5, 1, 0.5]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.computerScreen.geometry}
+        material={nodes.computerScreen.material}
+        position={[-0.4, 3.8, 0.9]}
+        scale={0.9}
       />
     </group>
   );
