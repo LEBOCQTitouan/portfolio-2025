@@ -18,7 +18,6 @@ type GLTFResult = GLTF & {
   materials: {}; // eslint-disable-line
 };
 
-// TODO : fix lamp aterfact in gltf model
 export function Computer(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/computer.glb") as GLTFResult; // eslint-disable-line
 
