@@ -2,55 +2,96 @@
 
 import styles from "./HomeScene.module.css";
 
-import { OrthographicCamera } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import React from "react";
+import * as THREE from "three";
+import {
+  Helper,
+  OrthographicCamera,
+  PerspectiveCamera,
+} from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Computer } from "../objects/Computer";
 import { folder, useControls } from "leva";
+
+// NOTE : based on https://codesandbox.io/p/sandbox/multiple-views-with-uniform-controls-r9w2ob?file=/src/App.js
 // TODO : remove leva for prod
 function SceneCamera() {
   const {
-    zoom,
     positionX,
     positionY,
     positionZ,
     rotationX,
     rotationY,
     rotationZ,
-    near,
-    far,
+    orthographic,
   } = useControls("Camera", {
-    zoom: { value: 60, min: 1, max: 200, step: 0.1 },
-    near: { value: 0.01, min: 0.01, max: 1, step: 0.01 },
-    far: { value: 100, min: 1, max: 200, step: 1 },
+    orthographic: true,
 
     position: folder(
       {
-        positionX: { value: -3.7, min: -10, max: 10, step: 0.1 },
-        positionY: { value: 7.4, min: -10, max: 10, step: 0.1 },
-        positionZ: { value: 5.0, min: -10, max: 10, step: 0.1 },
+        positionX: { value: 0, min: -10, max: 10, step: 0.1 },
+        positionY: { value: 0, min: -10, max: 10, step: 0.1 },
+        positionZ: { value: 0, min: -10, max: 10, step: 0.1 },
       },
       { collapsed: true },
     ),
 
     rotation: folder(
       {
-        rotationX: { value: -0.4, min: -Math.PI, max: Math.PI, step: 0.01 },
-        rotationY: { value: -0.6, min: -Math.PI, max: Math.PI, step: 0.01 },
-        rotationZ: { value: -0.25, min: -Math.PI, max: Math.PI, step: 0.01 },
+        rotationX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
+        rotationY: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
+        rotationZ: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
       },
       { collapsed: true },
     ),
   });
 
-  return (
-    <OrthographicCamera
+  return !orthographic ? (
+    <PerspectiveCamera
       makeDefault
-      zoom={zoom}
       position={[positionX, positionY, positionZ]}
       rotation={[rotationX, rotationY, rotationZ]}
-      near={near}
-      far={far}
+      fov={25}
     />
+  ) : (
+    <OrthographicCamera
+      makeDefault
+      position={[positionX, positionY, positionZ]}
+      rotation={[rotationX, rotationY, rotationZ]}
+    />
+  );
+}
+
+SceneCamera.displayName = "SceneCamera";
+
+// NOTE : CameraHelper is a dev function used to preview the final camera animation and based on https://drei.pmnd.rs/?path=/story/gizmos-helper--helper-st-2
+// TODO : remove Camera helper and bake in animations in the SceneCamera Component
+function SceneCameraHelper() {
+  const camera = React.useRef<THREE.PerspectiveCamera>(null);
+
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime();
+
+    if (camera.current) {
+      camera.current.lookAt(0, 0, 0);
+
+      camera.current.position.x = Math.sin(t) * 4;
+      camera.current.position.z = Math.cos(t) * 4;
+    }
+  });
+
+  return (
+    <PerspectiveCamera
+      makeDefault={false}
+      position={[0, 3, 3]}
+      near={1}
+      far={4}
+      ref={camera}
+    >
+      <meshBasicMaterial />
+
+      <Helper type={THREE.CameraHelper} />
+    </PerspectiveCamera>
   );
 }
 
@@ -78,6 +119,7 @@ function Devutils() {
     <>
       {showGridHelper && <gridHelper args={[gridDivisions, gridDivisions]} />}
       {showAxesHelper && <axesHelper args={[axisHelperSize]} />}
+      <SceneCameraHelper />
     </>
   );
 }

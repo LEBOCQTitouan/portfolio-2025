@@ -18,22 +18,13 @@ type GLTFResult = GLTF & {
   materials: {}; // eslint-disable-line
 };
 
-export function Computer(props: JSX.IntrinsicElements["group"]) {
+// TODO : [blender] simplify the model
+export function Computer() {
   const { nodes, materials } = useGLTF("/computer.glb") as GLTFResult; // eslint-disable-line
-
-  let adjustedRotation: THREE.Euler;
-  if (props.rotation) {
-    const eulerProp = props.rotation as THREE.Euler;
-    adjustedRotation = new THREE.Euler(
-      eulerProp.x,
-      eulerProp.y + Math.PI,
-      eulerProp.z,
-    );
-  } else adjustedRotation = new THREE.Euler(0, Math.PI, 0);
 
   return (
     // he glb mesh is initialy not facing the cam
-    <group {...props} rotation={adjustedRotation} dispose={null}>
+    <group scale={0.1} dispose={null}>
       <mesh
         castShadow
         receiveShadow
