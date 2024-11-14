@@ -6,6 +6,7 @@ import React from "react";
 import * as THREE from "three";
 import {
   Helper,
+  OrbitControls,
   OrthographicCamera,
   PerspectiveCamera,
 } from "@react-three/drei";
@@ -16,53 +17,34 @@ import { folder, useControls } from "leva";
 // NOTE : based on https://codesandbox.io/p/sandbox/multiple-views-with-uniform-controls-r9w2ob?file=/src/App.js
 // TODO : remove leva for prod
 function SceneCamera() {
-  const {
-    positionX,
-    positionY,
-    positionZ,
-    rotationX,
-    rotationY,
-    rotationZ,
-    orthographic,
-  } = useControls("Camera", {
+  const { orthographic } = useControls("Camera", {
     orthographic: true,
-
-    position: folder(
-      {
-        positionX: { value: 0, min: -10, max: 10, step: 0.1 },
-        positionY: { value: 0, min: -10, max: 10, step: 0.1 },
-        positionZ: { value: 0, min: -10, max: 10, step: 0.1 },
-      },
-      { collapsed: true },
-    ),
-
-    rotation: folder(
-      {
-        rotationX: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
-        rotationY: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
-        rotationZ: { value: 0, min: -Math.PI, max: Math.PI, step: 0.01 },
-      },
-      { collapsed: true },
-    ),
   });
 
-  return !orthographic ? (
-    <PerspectiveCamera
-      makeDefault
-      position={[positionX, positionY, positionZ]}
-      rotation={[rotationX, rotationY, rotationZ]}
-      fov={25}
-    />
-  ) : (
-    <OrthographicCamera
-      makeDefault
-      position={[positionX, positionY, positionZ]}
-      rotation={[rotationX, rotationY, rotationZ]}
-    />
+  return (
+    <>
+      {!orthographic ? (
+        <PerspectiveCamera makeDefault fov={25} position={[4, 4, 4]} />
+      ) : (
+        <OrthographicCamera makeDefault zoom={280} position={[4, 4, 4]} />
+      )}
+    </>
   );
 }
 
 SceneCamera.displayName = "SceneCamera";
+
+// TODO : remove SceneLightHelper and insert light to scene
+function SceneLightHelper() {
+  const light = React.useRef<THREE.DirectionalLight>(null);
+
+  return (
+    <directionalLight intensity={3} position={[0, 3, 2]} ref={light}>
+      <meshBasicMaterial />
+      <Helper type={THREE.DirectionalLightHelper} />
+    </directionalLight>
+  );
+}
 
 // NOTE : CameraHelper is a dev function used to preview the final camera animation and based on https://drei.pmnd.rs/?path=/story/gizmos-helper--helper-st-2
 // TODO : remove Camera helper and bake in animations in the SceneCamera Component
@@ -81,17 +63,18 @@ function SceneCameraHelper() {
   });
 
   return (
-    <PerspectiveCamera
-      makeDefault={false}
-      position={[0, 3, 3]}
-      near={1}
-      far={4}
-      ref={camera}
-    >
-      <meshBasicMaterial />
-
-      <Helper type={THREE.CameraHelper} />
-    </PerspectiveCamera>
+    <>
+      <PerspectiveCamera
+        makeDefault={false}
+        position={[0, 3, 3]}
+        near={1}
+        far={4}
+        ref={camera}
+      >
+        <meshBasicMaterial />
+        <Helper type={THREE.CameraHelper} />
+      </PerspectiveCamera>
+    </>
   );
 }
 
@@ -119,7 +102,9 @@ function Devutils() {
     <>
       {showGridHelper && <gridHelper args={[gridDivisions, gridDivisions]} />}
       {showAxesHelper && <axesHelper args={[axisHelperSize]} />}
+      <OrbitControls makeDefault />
       <SceneCameraHelper />
+      <SceneLightHelper />
     </>
   );
 }
@@ -135,7 +120,6 @@ export function HomeScene() {
         <Devutils />
         {/* scene setup */}
         <ambientLight intensity={0.5} />
-        <directionalLight intensity={3} position={[0, 3, 2]} />
         {/* objects */}
         <Computer />
       </Canvas>

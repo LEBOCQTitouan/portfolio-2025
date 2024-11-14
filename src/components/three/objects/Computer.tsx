@@ -18,6 +18,7 @@ type GLTFResult = GLTF & {
   materials: {}; // eslint-disable-line
 };
 
+// TODO : [blender/three] fix the fact that the model is turned around
 // TODO : [blender] simplify the model
 export function Computer() {
   const { nodes, materials } = useGLTF("/computer.glb") as GLTFResult; // eslint-disable-line
