@@ -20,12 +20,12 @@ type GLTFResult = GLTF & {
 
 // TODO : [blender/three] fix the fact that the model is turned around
 // TODO : [blender] simplify the model
-export function Computer() {
+export function Computer(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF("/computer.glb") as GLTFResult; // eslint-disable-line
 
   return (
     // he glb mesh is initialy not facing the cam
-    <group scale={0.1} dispose={null}>
+    <group {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow
