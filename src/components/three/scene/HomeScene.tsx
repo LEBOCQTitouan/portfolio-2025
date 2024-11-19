@@ -41,10 +41,6 @@ SceneCamera.displayName = "SceneCamera";
 export function HomeScene() {
   const { ref, inView } = useInView();
 
-  useEffect(() => {
-    console.log("Landing canvas is in view : ", inView);
-  }, [inView]);
-
   return (
     <div ref={ref} style={{ height: "100%", width: "100%" }}>
       <Canvas frameloop={inView ? "always" : "never"}>
