@@ -16,7 +16,8 @@
     "leva": "^0.9.35",
     "next": "^14.2.17",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-intersection-observer": "^9.13.1"
   },
   "devDependencies": {
     "@types/node": "^20",

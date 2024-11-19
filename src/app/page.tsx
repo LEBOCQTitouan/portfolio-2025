@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
       <LandingLayout /> {/* Landing layout contains the header */}
-      <div style={{ height: "100vh", background: "blue" }}>
+      <div style={{ height: "150vh", background: "blue" }}>
         here goes the content
       </div>
       <Footer />
