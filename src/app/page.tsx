@@ -1,13 +1,14 @@
 // import styles from "./page.module.css";
 import { Footer } from "@/components/layout/footer/Footer";
-import { Header } from "@/components/layout/header/Header";
-import { LandingView } from "@/components/layout/home/Landing";
+import { LandingLayout } from "@/components/layout/home/Landing";
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <LandingView />
+      <LandingLayout /> {/* Landing layout contains the header */}
+      <div style={{ height: "100vh", background: "blue" }}>
+        here goes the content
+      </div>
       <Footer />
     </>
   );

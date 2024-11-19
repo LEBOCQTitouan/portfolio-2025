@@ -74,7 +74,7 @@ export function Devutils() {
     ),
     orbitControls: folder(
       {
-        orbitControls: true,
+        orbitControls: false,
       },
       { collapsed: true },
     ),

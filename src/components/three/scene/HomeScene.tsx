@@ -1,7 +1,5 @@
 "use client"; // client side rendering
 
-import styles from "./HomeScene.module.css";
-
 import React from "react";
 import * as THREE from "three";
 import { OrthographicCamera, PerspectiveCamera } from "@react-three/drei";
@@ -40,16 +38,14 @@ SceneCamera.displayName = "SceneCamera";
 // @see @react-three/drei/Environment
 export function HomeScene() {
   return (
-    <div className={styles.scene}>
-      <Canvas>
-        <color attach="background" args={["#f0f0f0"]} />
-        <SceneCamera />
-        <Devutils />
-        {/* scene setup */}
-        <ambientLight intensity={0.5} />
-        {/* objects */}
-        <Computer scale={0.25} rotation={[0, -Math.PI / 2, 0]} />
-      </Canvas>
-    </div>
+    <Canvas>
+      <color attach="background" args={["#f0f0f0"]} />
+      <SceneCamera />
+      <Devutils />
+      {/* scene setup */}
+      <ambientLight intensity={0.5} />
+      {/* objects */}
+      <Computer scale={0.25} rotation={[0, -Math.PI / 2, 0]} />
+    </Canvas>
   );
 }

@@ -1,0 +1,12 @@
+.landingScrolledWrapper {
+  min-height: 200vh;
+  min-width: 100vw;
+}
+
+.canvasHolder {
+  height: 100vh;
+
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}

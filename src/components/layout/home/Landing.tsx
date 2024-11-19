@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import styles from "./Landing.module.css";
 
 // based on https://github.com/vercel/next.js/issues/4515
 // TODO : make loading screen
@@ -11,10 +12,14 @@ const HomeScene = dynamic(
   { ssr: false },
 );
 
-export function LandingView() {
+export function LandingLayout() {
   return (
-    <>
-      <HomeScene />
-    </>
+    <div className={styles.landingScrolledWrapper}>
+      <div className={styles.canvasHolder}>
+        some content
+        <HomeScene />
+      </div>
+      <div>other element</div>
+    </div>
   );
 }
