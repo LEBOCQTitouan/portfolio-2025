@@ -1,6 +1,6 @@
 "use client"; // client side rendering
 
-import React, { useEffect } from "react";
+import React from "react";
 import * as THREE from "three";
 import { OrthographicCamera, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";

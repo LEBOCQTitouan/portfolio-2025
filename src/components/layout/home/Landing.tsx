@@ -1,6 +1,9 @@
-import React from "react";
-import dynamic from "next/dynamic";
+"use client";
 import styles from "./Landing.module.css";
+
+import React, { useEffect } from "react";
+import dynamic from "next/dynamic";
+import { useScrollPercentage } from "@/components/utils/useScrollPercentage";
 
 // based on https://github.com/vercel/next.js/issues/4515
 // TODO : make loading screen
@@ -13,13 +16,18 @@ const HomeScene = dynamic(
 );
 
 export function LandingLayout() {
+  const { ref, percentage } = useScrollPercentage();
+
+  useEffect(() => {
+    console.log("landing header scrolled at : ", percentage);
+  }, [percentage]);
+
   return (
     <div className={styles.landingScrolledWrapper}>
       <div className={styles.canvasHolder}>
-        some content
         <HomeScene />
       </div>
-      <div>other element</div>
+      <div ref={ref} className={styles.scrollSpace} />
     </div>
   );
 }
