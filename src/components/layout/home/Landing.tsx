@@ -1,7 +1,7 @@
 "use client";
 import styles from "./Landing.module.css";
 
-import React, { useEffect } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 import { useScrollPercentage } from "@/components/utils/useScrollPercentage";
 
@@ -16,11 +16,7 @@ const HomeScene = dynamic(
 );
 
 export function LandingLayout() {
-  const { ref, percentage } = useScrollPercentage();
-
-  useEffect(() => {
-    console.log("landing header scrolled at : ", percentage);
-  }, [percentage]);
+  const { ref, percentage } = useScrollPercentage(); // eslint-disable-line
 
   return (
     <div className={styles.landingScrolledWrapper}>
