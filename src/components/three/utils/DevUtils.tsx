@@ -4,7 +4,6 @@ import { folder, useControls } from "leva";
 import { Helper, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
-// TODO : remove SceneLightHelper and insert light to scene
 function SceneLightHelper() {
   const light = React.useRef<THREE.DirectionalLight>(null);
 
@@ -17,7 +16,6 @@ function SceneLightHelper() {
 }
 
 // NOTE : CameraHelper is a dev function used to preview the final camera animation and based on https://drei.pmnd.rs/?path=/story/gizmos-helper--helper-st-2
-// TODO : remove Camera helper and bake in animations in the SceneCamera Component
 function SceneCameraHelper() {
   const camera = React.useRef<THREE.PerspectiveCamera>(null);
 
@@ -49,7 +47,6 @@ function SceneCameraHelper() {
 }
 
 // NOTE : The X axis is red, the Y axis is green and the Z axis is blue.
-// TODO : remove leva for prod
 export function Devutils() {
   const {
     showGridHelper,
@@ -85,7 +82,7 @@ export function Devutils() {
       {showGridHelper && <gridHelper args={[gridDivisions, gridDivisions]} />}
       {showAxesHelper && <axesHelper args={[axisHelperSize]} />}
       {orbitControls && <OrbitControls makeDefault />}
-      {/* <SceneCameraHelper /> */}
+      <SceneCameraHelper />
       <SceneLightHelper />
     </>
   );

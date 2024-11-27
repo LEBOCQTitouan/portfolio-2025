@@ -131,13 +131,7 @@ export function ScrollCamera() {
       position={[11.645, 12.782, -11.372]}
       rotation={[-2.36, 0.628, 2.614]}
     >
-      <PerspectiveCamera
-        name="Camera"
-        makeDefault={true}
-        far={100}
-        near={0.1}
-        fov={61.555}
-      />
+      <PerspectiveCamera makeDefault={true} far={100} near={0.1} fov={61.555} />
     </group>
   );
 }
