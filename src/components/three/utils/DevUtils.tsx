@@ -4,6 +4,10 @@ import { folder, useControls } from "leva";
 import { Helper, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 
+/**
+ * A helper component that renders a Directional Light in the scene
+ * along with its helper for visualization.
+ */
 function SceneLightHelper() {
   const light = React.useRef<THREE.DirectionalLight>(null);
 
@@ -15,10 +19,17 @@ function SceneLightHelper() {
   );
 }
 
-// NOTE : CameraHelper is a dev function used to preview the final camera animation and based on https://drei.pmnd.rs/?path=/story/gizmos-helper--helper-st-2
+/**
+ * A helper component to visualize and animate a Perspective Camera.
+ *
+ * This function animates the camera's position and ensures it looks
+ * at the origin. It also uses a `PerspectiveCamera` helper for debugging.
+ * Based on the implementation at: https://drei.pmnd.rs/?path=/story/gizmos-helper--helper-st-2
+ */
 function SceneCameraHelper() {
   const camera = React.useRef<THREE.PerspectiveCamera>(null);
 
+  // Sample code to animate the camera's position around the origin
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
 
@@ -46,14 +57,19 @@ function SceneCameraHelper() {
   );
 }
 
-// NOTE : The X axis is red, the Y axis is green and the Z axis is blue.
+/**
+ * Development utilities component for debugging the 3D scene.
+ *
+ * This component includes tools for visualizing the grid, axes, orbit controls,
+ * and helpers for camera and lighting. Controlled via the `Leva` panel.
+ */
 export function Devutils() {
   const {
-    showGridHelper,
-    gridDivisions,
-    showAxesHelper,
-    axisHelperSize,
-    orbitControls,
+    showGridHelper, // Toggle visibility of the grid helper
+    gridDivisions, // Number of divisions in the grid
+    showAxesHelper, // Toggle visibility of the axes helper
+    axisHelperSize, // Size of the axes helper
+    orbitControls, // Enable or disable orbit controls
   } = useControls("Devutils", {
     grid: folder(
       {
