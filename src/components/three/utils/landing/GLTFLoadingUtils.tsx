@@ -8,9 +8,17 @@ import React, {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
+  useRef,
 } from "react";
-import { useGLTF, Merged, PerspectiveCamera } from "@react-three/drei";
+import {
+  useGLTF,
+  Merged,
+  PerspectiveCamera,
+  useAnimations,
+} from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { useLandingAnimation } from "./LandingStore";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -37,16 +45,19 @@ type ModelContextType = {
     React.ForwardRefExoticComponent<JSX.IntrinsicElements["mesh"]>
   >;
   materials: GLTFResult["materials"];
+  animations: THREE.AnimationClip[];
 };
-
-// type ActionName = "Action";
-// export type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 
 const context = createContext<ModelContextType | null>(null);
 
 // TODO : might need to decouple the scene and the Instances provider for more versatil use
 export function Instances(props: PropsWithChildren) {
-  const { nodes, materials } = useGLTF("/computer.glb") as GLTFResult;
+  const group = useRef<THREE.Group>(null!);
+
+  const { nodes, materials, animations } = useGLTF(
+    "/computer.glb",
+  ) as GLTFResult;
+
   const instances = useMemo(
     () => ({
       coffeMug: nodes.coffeMug,
@@ -59,7 +70,10 @@ export function Instances(props: PropsWithChildren) {
     [nodes],
   );
 
-  const memoizedMaterials = useMemo(() => materials, [materials]);
+  const memoizedMaterials = useMemo<GLTFResult["materials"]>(
+    () => materials,
+    [materials],
+  );
 
   return (
     <Merged meshes={instances}>
@@ -70,9 +84,15 @@ export function Instances(props: PropsWithChildren) {
         >,
       ) => (
         <context.Provider
-          value={{ instances: instancedMeshes, materials: memoizedMaterials }}
+          value={{
+            instances: instancedMeshes,
+            materials: memoizedMaterials,
+            animations: animations,
+          }}
         >
-          {props.children}
+          <group ref={group} {...props} dispose={null}>
+            <group name="Scene">{props.children}</group>
+          </group>
         </context.Provider>
       )}
     </Merged>
@@ -86,17 +106,38 @@ export function useInstances(): ModelContextType {
   return instances;
 }
 
-// TODO : move to other folder
-export function Camera() {
+// TODO : move to other file
+// NOTE : checked animation using https://gltf-viewer.donmccurdy.com/
+export function ScrollCamera() {
+  const group = useRef<THREE.Group>(null!);
+  const { animations } = useInstances();
+  const { percentage } = useLandingAnimation();
+
+  const { actions } = useAnimations(animations, group);
+
+  useEffect(() => {
+    if (actions["CameraAction"]) {
+      const action = actions["CameraAction"];
+      action.paused = true;
+      action.time = action.getClip().duration * percentage;
+      action.play();
+    }
+  }, [actions, percentage]);
+
   return (
-    <PerspectiveCamera
+    <group
+      ref={group}
       name="Camera"
-      makeDefault={true}
-      far={100}
-      near={0.1}
-      fov={61.555}
       position={[11.645, 12.782, -11.372]}
       rotation={[-2.36, 0.628, 2.614]}
-    />
+    >
+      <PerspectiveCamera
+        name="Camera"
+        makeDefault={true}
+        far={100}
+        near={0.1}
+        fov={61.555}
+      />
+    </group>
   );
 }
