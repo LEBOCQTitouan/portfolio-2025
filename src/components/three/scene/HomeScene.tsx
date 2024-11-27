@@ -4,7 +4,8 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { Computer } from "../objects/Computer";
 import { useInView } from "react-intersection-observer";
-import { ScrollCamera, Instances } from "../utils/landing/GLTFLoadingUtils";
+import { Instances } from "../utils/landing/GLTFLoadingUtils";
+import { ScrollCamera } from "../objects/ScrollCamera";
 
 /**
  * HomeScene Component
