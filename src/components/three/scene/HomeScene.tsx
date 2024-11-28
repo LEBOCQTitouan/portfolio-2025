@@ -38,6 +38,8 @@ export function HomeScene() {
           <Computer />
           <ScrollCamera />
         </Instances>
+        <ambientLight />
+        <directionalLight />
         {/* <Devutils /> */}
       </Canvas>
     </div>
